@@ -1,42 +1,50 @@
-/**
- * Created by Jimmy on 2/17/2017.
- */
-
 import java.util.*;
 
 public class Brute {
 
-    public int size;
-    public Point[] points;
+    public int size;            //Number of points to be considered
+    public Point[] points;      //Array of the points
 
+    /**
+    Constructor.
+    **/
     public Brute(int size) {
         this.size = size;
         this.points = new Point[size];
     }
 
+    /**
+    Creates a point with the given x and y coordinates and stores it in the pos index of points.
+    **/
     public void add(int x, int y, int pos) {
         Point p = new Point(x,y);
         points[pos] = p;
     }
 
-    public void output(Point p, Point q, Point r, Point s) {
-        System.out.print("4:(");
-        System.out.print(p.getX() + ", " + p.getY() + ") -> (");
-        System.out.print(q.getX() + ", " + q.getY() + ") -> (");
-        System.out.print(r.getX() + ", " + r.getY() + ") -> (");
-        System.out.print(s.getX() + ", " + s.getY() + ")\n");
+    /**
+    Formats the output string and outputs it to standard output and the file "visualPoints.txt".
+    **/
+    public void output(Point p, Point q, Point r, Point s, Out outputFile) {
+     	String output = "4:(" + p.getX() + ", " + p.getY() + ") -> (" + q.getX() + ", " + q.getY() + ") -> (" + r.getX() + ", " + r.getY() + ") -> (" + s.getX() + ", " + s.getY() + ")";
+     	System.out.println(output);
+     	outputFile.println(output);
     }
 
+    /**
+    Reads in n (x,y) coordinate pairs piped from an input file, finds every colinear set of 4 points and outputs them. This algorithm is
+    meant to be an inefficent, brute force method of solving this problem.
+    **/
     public static void main(String[] args) {
-        int n = 6;
+        int n = StdIn.readInt();
         int position = 0;
         Brute b = new Brute(n);
-        b.add(19000, 10000, position++);
-        b.add(18000, 10000, position++);
-        b.add(32000, 10000, position++);
-        b.add(21000, 10000, position++);
-        b.add(1234, 5678, position++);
-        b.add(14000, 10000, position);
+     	while(!StdIn.isEmpty()) {
+     		int x = StdIn.readInt();
+         	int y = StdIn.readInt();
+         	b.add(x,y,position);
+         	position++;
+        }
+        Out outputFile = new Out("visualPoints.txt");
         Arrays.sort(b.points);
         if (b.size > 3) {
             for (int i = 0; i < b.size; i++) {
